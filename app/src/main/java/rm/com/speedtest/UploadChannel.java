@@ -10,7 +10,7 @@ import okhttp3.RequestBody;
  * Created by alex
  */
 
-public final class UploadChannel extends BaseHttpChannel {
+public final class UploadChannel extends BaseChannel {
   public UploadChannel(@NonNull OkHttpClient httpClient) {
     super(httpClient);
   }
@@ -18,8 +18,8 @@ public final class UploadChannel extends BaseHttpChannel {
   @NonNull @Override
   protected Request defaultRequestOf(@NonNull CallId callId, @NonNull Endpoint src,
       @NonNull Endpoint dest) {
-    final HttpUrl httpUrl = HttpUrl.get(src.asURI());
-    final RequestBody body = RequestBody.create(null, src.asFile());
+    final HttpUrl httpUrl = HttpUrl.get(src.uri());
+    final RequestBody body = RequestBody.create(null, src.file());
 
     if (httpUrl == null) {
       throw new IllegalStateException("Couldn't parse source URL");

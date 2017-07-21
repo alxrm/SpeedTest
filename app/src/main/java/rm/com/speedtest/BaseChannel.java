@@ -10,7 +10,7 @@ import okhttp3.Request;
  * Created by alex
  */
 
-abstract public class BaseHttpChannel implements Channel, ChannelProgressListener {
+abstract public class BaseChannel implements Channel, ChannelProgressListener {
   private static final int DEFAULT_CALL_AMOUNT = 12;
 
   final HashMap<String, ChannelCall> channelCalls;
@@ -18,7 +18,7 @@ abstract public class BaseHttpChannel implements Channel, ChannelProgressListene
   private final OkHttpClient httpClient;
   private Modification modification;
 
-  public BaseHttpChannel(@NonNull OkHttpClient httpClient) {
+  public BaseChannel(@NonNull OkHttpClient httpClient) {
     this.channelCalls = new HashMap<>(DEFAULT_CALL_AMOUNT);
     this.httpClient = httpClientOf(httpClient);
   }
@@ -46,12 +46,12 @@ abstract public class BaseHttpChannel implements Channel, ChannelProgressListene
     channelCalls.clear();
   }
 
-  public final void after(@NonNull Modification afterModification) {
-    modification = afterModification;
-  }
-
   @Override
   public void update(@NonNull String tag, long bytesPassed, long contentLength, boolean done) {
+  }
+
+  public final void after(@NonNull Modification afterModification) {
+    modification = afterModification;
   }
 
   @NonNull

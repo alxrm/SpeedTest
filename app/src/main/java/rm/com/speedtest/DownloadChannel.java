@@ -9,11 +9,10 @@ import okhttp3.Request;
  * Created by alex
  */
 
-public final class DownloadChannel extends BaseHttpChannel {
+public final class DownloadChannel extends BaseChannel {
   public DownloadChannel(@NonNull OkHttpClient httpClient) {
     super(httpClient);
   }
-
 
   @NonNull @Override protected OkHttpClient httpClientOf(@NonNull OkHttpClient httpClient) {
     return httpClient.newBuilder()
@@ -24,7 +23,7 @@ public final class DownloadChannel extends BaseHttpChannel {
 
   @NonNull @Override protected Request defaultRequestOf(@NonNull CallId callId, @NonNull Endpoint src,
       @NonNull Endpoint dest) {
-    final HttpUrl httpUrl = HttpUrl.get(src.asURI());
+    final HttpUrl httpUrl = HttpUrl.get(src.uri());
 
     if (httpUrl == null) {
       throw new IllegalStateException("Couldn't parse source URL");

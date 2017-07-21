@@ -12,7 +12,11 @@ public final class Endpoint {
     this.path = path;
   }
 
-  @NonNull public URI asURI() {
+  public String path() {
+    return path;
+  }
+
+  @NonNull public URI uri() {
     try {
       return new URI(path);
     } catch (URISyntaxException e) {
@@ -20,7 +24,7 @@ public final class Endpoint {
     }
   }
 
-  @NonNull public File asFile() {
+  @NonNull public File file() {
     return new File(path);
   }
 }

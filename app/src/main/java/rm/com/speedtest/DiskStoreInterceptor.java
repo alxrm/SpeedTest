@@ -39,7 +39,7 @@ public final class DiskStoreInterceptor implements Interceptor {
   private void saveResponseToDisk(@NonNull ChannelCall call, @NonNull ResponseBody body)
       throws IOException {
     final BufferedSource source = body.source();
-    final BufferedSink sink = Okio.buffer(Okio.sink(call.dest().asFile()));
+    final BufferedSink sink = Okio.buffer(Okio.sink(call.dest().file()));
 
     source.readAll(sink);
     sink.writeAll(source);
