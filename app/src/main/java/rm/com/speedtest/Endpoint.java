@@ -6,21 +6,21 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public final class Endpoint {
-  final String uri;
+  private final String path;
 
-  public Endpoint(String uri) {
-    this.uri = uri;
+  public Endpoint(String path) {
+    this.path = path;
   }
 
   @NonNull public URI asURI() {
     try {
-      return new URI(uri);
+      return new URI(path);
     } catch (URISyntaxException e) {
       throw new RuntimeException(e);
     }
   }
 
   @NonNull public File asFile() {
-    return new File(uri);
+    return new File(path);
   }
 }

@@ -3,9 +3,11 @@ package rm.com.speedtest;
 import android.support.annotation.NonNull;
 
 public interface Channel {
-  String KEY_DOWNLOAD_CALL = "key-download-call";
+  String KEY_CHANNEL_CALL = "key-channel-call";
 
   @NonNull ChannelCall open(@NonNull Endpoint src, @NonNull Endpoint dest);
 
   void close(@NonNull ChannelCall channelCall);
+
+  void closeAll();
 }

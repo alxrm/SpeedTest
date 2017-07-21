@@ -27,7 +27,7 @@ public final class DiskStoreInterceptor implements Interceptor {
     final Request request = chain.request();
     final Response response = chain.proceed(request);
     final ResponseBody body = response.body();
-    final ChannelCall call = findActiveChannelCall(request);
+    final ChannelCall call = channelCallForRequest(request);
 
     if (call != null && body != null) {
       saveResponseToDisk(call, body);
@@ -47,7 +47,7 @@ public final class DiskStoreInterceptor implements Interceptor {
     source.close();
   }
 
-  @Nullable private ChannelCall findActiveChannelCall(@NonNull Request request) {
-    return channelCalls.get(request.header(Channel.KEY_DOWNLOAD_CALL));
+  @Nullable private ChannelCall channelCallForRequest(@NonNull Request request) {
+    return channelCalls.get(request.header(Channel.KEY_CHANNEL_CALL));
   }
 }

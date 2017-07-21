@@ -37,7 +37,7 @@ public final class DownloadProgressInterceptor implements Interceptor {
   }
 
   @Nullable private ChannelCall channelCallForRequest(@NonNull Request request) {
-    return channelCalls.get(request.header(Channel.KEY_DOWNLOAD_CALL));
+    return channelCalls.get(request.header(Channel.KEY_CHANNEL_CALL));
   }
 
   @NonNull
