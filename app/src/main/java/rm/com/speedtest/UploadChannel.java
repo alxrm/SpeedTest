@@ -10,7 +10,7 @@ import okhttp3.RequestBody;
  * Created by alex
  */
 
-public final class UploadChannel extends BaseChannel {
+public class UploadChannel extends BaseChannel {
   public UploadChannel(@NonNull OkHttpClient httpClient) {
     super(httpClient);
   }
@@ -27,7 +27,6 @@ public final class UploadChannel extends BaseChannel {
 
     return new Request.Builder().url(httpUrl)
         .post(new ProgressRequestBody(body, callId.string(), this))
-        .addHeader(Channel.KEY_CHANNEL_CALL, callId.string())
         .build();
   }
 }

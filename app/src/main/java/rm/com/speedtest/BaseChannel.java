@@ -61,6 +61,9 @@ abstract public class BaseChannel implements Channel, ObservableChannel {
 
   @Override
   public void update(@NonNull String tag, long bytesPassed, long contentLength, boolean done) {
+    for (int i = 0, size = progressSubscribers.size(); i < size; i++) {
+      progressSubscribers.get(i).update(tag, bytesPassed, contentLength, done);
+    }
   }
 
   public final void after(@NonNull Modification afterModification) {
@@ -79,6 +82,13 @@ abstract public class BaseChannel implements Channel, ObservableChannel {
   private Request requestOf(@NonNull CallId callId, @NonNull Endpoint src, @NonNull Endpoint dest) {
     final Request defaultRequest = defaultRequestOf(callId, src, dest);
 
+    return afterModification(defaultRequest, src, dest).newBuilder()
+        .header(Channel.KEY_CHANNEL_CALL, callId.string())
+        .build();
+  }
+
+  @NonNull private Request afterModification(@NonNull Request defaultRequest, @NonNull Endpoint src,
+      @NonNull Endpoint dest) {
     return modification == null ? defaultRequest : modification.apply(defaultRequest, src, dest);
   }
 }
