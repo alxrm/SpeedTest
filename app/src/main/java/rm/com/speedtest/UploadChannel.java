@@ -18,7 +18,7 @@ public final class UploadChannel extends BaseChannel {
   @NonNull @Override
   protected Request defaultRequestOf(@NonNull CallId callId, @NonNull Endpoint src,
       @NonNull Endpoint dest) {
-    final HttpUrl httpUrl = HttpUrl.get(src.uri());
+    final HttpUrl httpUrl = HttpUrl.get(dest.uri());
     final RequestBody body = RequestBody.create(null, src.file());
 
     if (httpUrl == null) {

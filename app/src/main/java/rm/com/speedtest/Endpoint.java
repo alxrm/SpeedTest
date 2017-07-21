@@ -12,7 +12,7 @@ public final class Endpoint {
     this.path = path;
   }
 
-  public String path() {
+  @NonNull public String path() {
     return path;
   }
 

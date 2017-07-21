@@ -1,6 +1,7 @@
 package rm.com.speedtest;
 
 import android.support.annotation.NonNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -10,16 +11,20 @@ import okhttp3.Request;
  * Created by alex
  */
 
-abstract public class BaseChannel implements Channel, ChannelProgressListener {
+@SuppressWarnings("WeakerAccess") //
+abstract public class BaseChannel implements Channel, ObservableChannel {
   private static final int DEFAULT_CALL_AMOUNT = 12;
+  private static final int DEFAULT_LISTENERS_AMOUNT = 5;
 
   final HashMap<String, ChannelCall> channelCalls;
+  final ArrayList<ChannelProgressListener> progressSubscribers;
 
   private final OkHttpClient httpClient;
   private Modification modification;
 
   public BaseChannel(@NonNull OkHttpClient httpClient) {
     this.channelCalls = new HashMap<>(DEFAULT_CALL_AMOUNT);
+    this.progressSubscribers = new ArrayList<>(DEFAULT_LISTENERS_AMOUNT);
     this.httpClient = httpClientOf(httpClient);
   }
 
@@ -44,6 +49,14 @@ abstract public class BaseChannel implements Channel, ChannelProgressListener {
     }
 
     channelCalls.clear();
+  }
+
+  @Override public final void subscribe(@NonNull ChannelProgressListener listener) {
+    progressSubscribers.add(listener);
+  }
+
+  @Override public final void unsubscribe(@NonNull ChannelProgressListener listener) {
+    progressSubscribers.remove(listener);
   }
 
   @Override
