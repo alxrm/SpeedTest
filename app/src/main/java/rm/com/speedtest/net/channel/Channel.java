@@ -1,6 +1,7 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net.channel;
 
 import android.support.annotation.NonNull;
+import rm.com.speedtest.net.Endpoint;
 
 public interface Channel {
   String KEY_CHANNEL_CALL = "Key-channel-call";

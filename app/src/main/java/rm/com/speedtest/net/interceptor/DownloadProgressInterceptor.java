@@ -1,4 +1,4 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net.interceptor;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +7,10 @@ import java.util.HashMap;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import rm.com.speedtest.net.ProgressResponseBody;
+import rm.com.speedtest.net.channel.Channel;
+import rm.com.speedtest.net.channel.ChannelCall;
+import rm.com.speedtest.net.channel.ChannelProgressListener;
 
 /**
  * Created by alex

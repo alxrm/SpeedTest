@@ -1,4 +1,4 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net;
 
 import android.support.annotation.NonNull;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import okio.BufferedSink;
 import okio.ForwardingSink;
 import okio.Okio;
 import okio.Sink;
+import rm.com.speedtest.net.channel.ChannelProgressListener;
 
 /**
  * Created by alex

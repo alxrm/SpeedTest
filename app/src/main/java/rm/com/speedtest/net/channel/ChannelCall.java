@@ -1,8 +1,9 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net.channel;
 
 import android.support.annotation.NonNull;
 import okhttp3.Call;
 import okhttp3.Request;
+import rm.com.speedtest.net.Endpoint;
 
 public final class ChannelCall {
   private final Call call;

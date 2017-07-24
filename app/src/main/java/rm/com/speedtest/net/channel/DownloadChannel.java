@@ -1,9 +1,12 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net.channel;
 
 import android.support.annotation.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import rm.com.speedtest.net.interceptor.DiskStoreInterceptor;
+import rm.com.speedtest.net.interceptor.DownloadProgressInterceptor;
+import rm.com.speedtest.net.Endpoint;
 
 /**
  * Created by alex

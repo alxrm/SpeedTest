@@ -1,4 +1,4 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net.interceptor;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +11,8 @@ import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
+import rm.com.speedtest.net.channel.Channel;
+import rm.com.speedtest.net.channel.ChannelCall;
 
 /**
  * Created by alex

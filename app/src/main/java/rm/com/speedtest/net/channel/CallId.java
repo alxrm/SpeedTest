@@ -1,4 +1,4 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net.channel;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package rm.com.speedtest;
+package rm.com.speedtest.net;
 
 import android.support.annotation.NonNull;
 import java.io.File;
