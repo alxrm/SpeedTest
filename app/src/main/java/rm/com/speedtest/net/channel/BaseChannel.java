@@ -13,20 +13,19 @@ import rm.com.speedtest.net.Endpoint;
  */
 
 @SuppressWarnings("WeakerAccess") //
-abstract public class BaseChannel implements Channel, ObservableChannel {
-  private static final int DEFAULT_CALL_AMOUNT = 12;
-  private static final int DEFAULT_LISTENERS_AMOUNT = 5;
+abstract public class BaseChannel<C extends BaseChannel, B extends AbstractChannelBuilder<B, C>>
+    implements Channel, ObservableChannel {
 
   final HashMap<String, ChannelCall> channelCalls;
   final ArrayList<ChannelProgressListener> progressSubscribers;
+  final OkHttpClient httpClient;
+  final Modification modification;
 
-  private final OkHttpClient httpClient;
-  private Modification modification;
-
-  public BaseChannel(@NonNull OkHttpClient httpClient) {
-    this.channelCalls = new HashMap<>(DEFAULT_CALL_AMOUNT);
-    this.progressSubscribers = new ArrayList<>(DEFAULT_LISTENERS_AMOUNT);
-    this.httpClient = httpClientOf(httpClient);
+  BaseChannel(@NonNull B builder) {
+    this.channelCalls = builder.channelCalls;
+    this.progressSubscribers = builder.progressSubscribers;
+    this.httpClient = httpClientOf(builder.httpClient);
+    this.modification = builder.modification;
   }
 
   @NonNull @Override public ChannelCall open(@NonNull Endpoint src, @NonNull Endpoint dest) {
@@ -62,14 +61,12 @@ abstract public class BaseChannel implements Channel, ObservableChannel {
 
   @Override
   public void update(@NonNull String tag, long bytesPassed, long contentLength, boolean done) {
-    for (int i = 0, size = progressSubscribers.size(); i < size; i++) {
-      progressSubscribers.get(i).update(tag, bytesPassed, contentLength, done);
+    for (final ChannelProgressListener subscriber : progressSubscribers) {
+      subscriber.update(tag, bytesPassed, contentLength, done);
     }
   }
 
-  public final void after(@NonNull Modification afterModification) {
-    modification = afterModification;
-  }
+  @NonNull public abstract B newBuilder();
 
   @NonNull
   protected abstract Request defaultRequestOf(@NonNull CallId callId, @NonNull Endpoint src,
