@@ -3,7 +3,9 @@ package rm.com.speedtest.net.channel;
 import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import okhttp3.Call;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import rm.com.speedtest.net.Endpoint;
@@ -13,7 +15,7 @@ import rm.com.speedtest.net.Endpoint;
  */
 
 @SuppressWarnings("WeakerAccess") //
-abstract public class BaseChannel<C extends BaseChannel, B extends AbstractChannelBuilder<B, C>>
+public abstract class BaseChannel<C extends BaseChannel, B extends AbstractChannelBuilder<C, B>>
     implements Channel, ObservableChannel {
 
   final HashMap<String, ChannelCall> channelCalls;
@@ -21,7 +23,7 @@ abstract public class BaseChannel<C extends BaseChannel, B extends AbstractChann
   final OkHttpClient httpClient;
   final Modification modification;
 
-  BaseChannel(@NonNull B builder) {
+  public BaseChannel(@NonNull B builder) {
     this.channelCalls = builder.channelCalls;
     this.progressSubscribers = builder.progressSubscribers;
     this.httpClient = httpClientOf(builder.httpClient);
@@ -74,6 +76,22 @@ abstract public class BaseChannel<C extends BaseChannel, B extends AbstractChann
 
   @NonNull protected OkHttpClient httpClientOf(@NonNull OkHttpClient httpClient) {
     return httpClient;
+  }
+
+  protected <I extends Interceptor> void addUniqueInterceptor(
+      @NonNull List<Interceptor> originalInterceptorsMutable, @NonNull I toAdd) {
+    final int size = originalInterceptorsMutable.size();
+    final ArrayList<Interceptor> interceptors = new ArrayList<>(size);
+
+    for (final Interceptor interceptor : originalInterceptorsMutable) {
+      if (!toAdd.getClass().isInstance(interceptor)) {
+        interceptors.add(interceptor);
+      }
+    }
+
+    originalInterceptorsMutable.clear();
+    originalInterceptorsMutable.addAll(interceptors);
+    originalInterceptorsMutable.add(toAdd);
   }
 
   @NonNull

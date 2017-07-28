@@ -12,9 +12,9 @@ import rm.com.speedtest.net.ProgressRequestBody;
  */
 
 @SuppressWarnings("WeakerAccess") //
-public class UploadChannel extends BaseChannel<UploadChannel, UploadChannel.Builder> {
+public final class UploadChannel extends BaseChannel<UploadChannel, UploadChannel.Builder> {
 
-  UploadChannel(@NonNull Builder builder) {
+  public UploadChannel(@NonNull Builder builder) {
     super(builder);
   }
 
@@ -37,7 +37,7 @@ public class UploadChannel extends BaseChannel<UploadChannel, UploadChannel.Buil
     return new Builder(this);
   }
 
-  public static final class Builder extends AbstractChannelBuilder<Builder, UploadChannel> {
+  public static final class Builder extends AbstractChannelBuilder<UploadChannel, Builder> {
     public Builder() {
       super();
     }

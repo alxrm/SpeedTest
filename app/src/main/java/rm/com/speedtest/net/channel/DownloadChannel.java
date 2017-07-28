@@ -13,17 +13,20 @@ import rm.com.speedtest.net.interceptor.DownloadProgressInterceptor;
  */
 
 @SuppressWarnings("WeakerAccess") //
-public class DownloadChannel extends BaseChannel<DownloadChannel, DownloadChannel.Builder> {
+public final class DownloadChannel extends BaseChannel<DownloadChannel, DownloadChannel.Builder> {
 
-  DownloadChannel(@NonNull Builder builder) {
+  public DownloadChannel(@NonNull Builder builder) {
     super(builder);
   }
 
   @NonNull @Override protected OkHttpClient httpClientOf(@NonNull OkHttpClient httpClient) {
-    return httpClient.newBuilder()
-        .addNetworkInterceptor(new DownloadProgressInterceptor(channelCalls, this))
-        .addInterceptor(new DiskStoreInterceptor(channelCalls))
-        .build();
+    final OkHttpClient.Builder builder = httpClient.newBuilder();
+
+    addUniqueInterceptor(builder.interceptors(), new DiskStoreInterceptor(channelCalls));
+    addUniqueInterceptor(builder.networkInterceptors(),
+        new DownloadProgressInterceptor(channelCalls, this));
+
+    return builder.build();
   }
 
   @NonNull @Override
@@ -42,12 +45,12 @@ public class DownloadChannel extends BaseChannel<DownloadChannel, DownloadChanne
     return new Builder(this);
   }
 
-  public static final class Builder extends AbstractChannelBuilder<Builder, DownloadChannel> {
+  public static final class Builder extends AbstractChannelBuilder<DownloadChannel, Builder> {
     public Builder() {
       super();
     }
 
-    Builder(DownloadChannel channel) {
+    Builder(@NonNull DownloadChannel channel) {
       super(channel);
     }
 

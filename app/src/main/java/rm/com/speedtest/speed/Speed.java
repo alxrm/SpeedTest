@@ -4,16 +4,16 @@ import android.support.annotation.NonNull;
 import java.util.concurrent.TimeUnit;
 
 public final class Speed {
-  private final long timeSpanMillis;
+  private final long timeSpanNanos;
   private final long units;
 
-  public Speed(long timeSpanMillis, long units) {
-    this.timeSpanMillis = timeSpanMillis;
+  public Speed(long timeSpanNanos, long units) {
+    this.timeSpanNanos = timeSpanNanos;
     this.units = units;
   }
 
-  public long timeSpanMillis() {
-    return timeSpanMillis;
+  public long timeSpanNanos() {
+    return timeSpanNanos;
   }
 
   public long units() {
@@ -21,13 +21,13 @@ public final class Speed {
   }
 
   public double unitsPerTime(@NonNull TimeUnit scale) {
-    // 40 units, 800 millis, 40/800 units/milli, 40 / (800 / second.asMillis) units/second
+    // 40 units, 800 nano, 40/800 units/nano, 40 / (800 / second.asNanos) units/second
 
-    if (timeSpanMillis == 0) {
+    if (timeSpanNanos == 0) {
       return 0;
     }
 
-    final double scaledTime = ((double) timeSpanMillis) / scale.toMillis(1);
+    final double scaledTime = ((double) timeSpanNanos) / scale.toNanos(1);
 
     return units / scaledTime;
   }
