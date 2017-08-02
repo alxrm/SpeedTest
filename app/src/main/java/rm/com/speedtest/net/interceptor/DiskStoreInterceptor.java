@@ -2,6 +2,7 @@ package rm.com.speedtest.net.interceptor;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import okhttp3.Interceptor;
@@ -40,8 +41,12 @@ public final class DiskStoreInterceptor implements Interceptor {
 
   private void saveResponseToDisk(@NonNull ChannelCall call, @NonNull ResponseBody body)
       throws IOException {
+    final File dest = call.dest().file();
+
+    createDirectoryIfNeeded(dest);
+
     final BufferedSource source = body.source();
-    final BufferedSink sink = Okio.buffer(Okio.sink(call.dest().file()));
+    final BufferedSink sink = Okio.buffer(Okio.sink(dest));
 
     source.readAll(sink);
     sink.writeAll(source);
@@ -51,5 +56,14 @@ public final class DiskStoreInterceptor implements Interceptor {
 
   @Nullable private ChannelCall channelCallForRequest(@NonNull Request request) {
     return channelCalls.get(request.header(Channel.KEY_CHANNEL_CALL));
+  }
+
+  private void createDirectoryIfNeeded(@NonNull File dest) {
+    final File parentDir = dest.getParentFile();
+
+    if (!parentDir.exists()) {
+      //noinspection ResultOfMethodCallIgnored
+      parentDir.mkdirs();
+    }
   }
 }
