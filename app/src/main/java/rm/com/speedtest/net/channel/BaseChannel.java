@@ -44,7 +44,11 @@ public abstract class BaseChannel<C extends BaseChannel, B extends AbstractChann
     return pendingCall;
   }
 
-  @Override public void close(@NonNull ChannelCall channelCall) {
+  @Override public void close(@Nullable ChannelCall channelCall) {
+    if (channelCall == null) {
+      return;
+    }
+
     final String callId = channelCall.id().string();
     final ChannelCall call = channelCalls.get(callId);
 
@@ -133,16 +137,9 @@ public abstract class BaseChannel<C extends BaseChannel, B extends AbstractChann
 
   @NonNull
   private Request requestOf(@NonNull CallId callId, @NonNull Endpoint src, @NonNull Endpoint dest) {
-    final Request defaultRequest = defaultRequestOf(callId, src, dest);
-
-    return afterModification(defaultRequest, src, dest).newBuilder()
+    return defaultRequestOf(callId, src, dest).newBuilder()
         .header(Channel.KEY_CHANNEL_CALL, callId.string())
         .build();
-  }
-
-  @NonNull private Request afterModification(@NonNull Request defaultRequest, @NonNull Endpoint src,
-      @NonNull Endpoint dest) {
-    return modification == null ? defaultRequest : modification.apply(defaultRequest, src, dest);
   }
 
   @Nullable private String removeSafely(@NonNull Call call) {
