@@ -7,4 +7,19 @@
     tools:context="rm.com.speedtest.MainActivity"
     >
 
+  <Button
+      android:id="@+id/start_camera"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:text="Start camera"
+      />
+
+  <TextView
+      android:id="@+id/start_paths"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Paths:"
+      />
+
 </RelativeLayout>

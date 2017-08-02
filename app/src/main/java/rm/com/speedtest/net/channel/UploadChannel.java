@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import rm.com.speedtest.net.Endpoint;
 import rm.com.speedtest.net.ProgressRequestBody;
 
 /**

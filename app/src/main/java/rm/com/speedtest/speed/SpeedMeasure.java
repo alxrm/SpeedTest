@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 public interface SpeedMeasure {
   void updateUnits(long nextUnits);
+  void begin();
   void reset();
   @NonNull Speed currentSpeed();
 }

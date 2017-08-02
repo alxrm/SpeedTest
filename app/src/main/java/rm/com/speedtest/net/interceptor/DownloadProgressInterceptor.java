@@ -1,54 +1,42 @@
 package rm.com.speedtest.net.interceptor;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.io.IOException;
-import java.util.HashMap;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import rm.com.speedtest.net.ProgressResponseBody;
 import rm.com.speedtest.net.channel.Channel;
-import rm.com.speedtest.net.channel.ChannelCall;
-import rm.com.speedtest.net.channel.ChannelProgressListener;
+import rm.com.speedtest.net.channel.LoadingProgressListener;
 
 /**
  * Created by alex
  */
 
 public final class DownloadProgressInterceptor implements Interceptor {
-  private final HashMap<String, ChannelCall> channelCalls;
-  private final ChannelProgressListener progressListener;
+  private final LoadingProgressListener progressListener;
 
-  public DownloadProgressInterceptor( //
-      @NonNull HashMap<String, ChannelCall> channelCalls, //
-      @NonNull ChannelProgressListener progressListener //
-  ) {
-    this.channelCalls = channelCalls;
+  public DownloadProgressInterceptor(@NonNull LoadingProgressListener progressListener) {
     this.progressListener = progressListener;
   }
 
   @Override public Response intercept(@NonNull Chain chain) throws IOException {
     final Request request = chain.request();
     final Response originalResponse = chain.proceed(request);
-    final ChannelCall call = channelCallForRequest(request);
+    final String callId = request.header(Channel.KEY_CHANNEL_CALL);
 
-    if (call == null) {
+    if (callId == null) {
       return originalResponse;
     }
 
-    return asProgressAwareResponse(call, originalResponse);
-  }
-
-  @Nullable private ChannelCall channelCallForRequest(@NonNull Request request) {
-    return channelCalls.get(request.header(Channel.KEY_CHANNEL_CALL));
+    return asProgressAwareResponse(callId, originalResponse);
   }
 
   @NonNull
-  private Response asProgressAwareResponse(@NonNull ChannelCall call, @NonNull Response response) {
+  private Response asProgressAwareResponse(@NonNull String callId, @NonNull Response response) {
     //noinspection ConstantConditions
     return response.newBuilder()
-        .body(new ProgressResponseBody(response.body(), call.id().string(), progressListener))
+        .body(new ProgressResponseBody(response.body(), callId, progressListener))
         .build();
   }
 }

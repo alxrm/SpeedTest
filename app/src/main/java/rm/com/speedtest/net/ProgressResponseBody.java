@@ -9,7 +9,7 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
-import rm.com.speedtest.net.channel.ChannelProgressListener;
+import rm.com.speedtest.net.channel.LoadingProgressListener;
 
 /**
  * Created by alex
@@ -17,12 +17,12 @@ import rm.com.speedtest.net.channel.ChannelProgressListener;
 public final class ProgressResponseBody extends ResponseBody {
   private final ResponseBody responseBody;
   private final String tag;
-  private final ChannelProgressListener progressListener;
+  private final LoadingProgressListener progressListener;
 
   private BufferedSource bufferedSource;
 
   public ProgressResponseBody(@NonNull ResponseBody responseBody, @NonNull String tag,
-      @NonNull ChannelProgressListener progressListener) {
+      @NonNull LoadingProgressListener progressListener) {
     this.responseBody = responseBody;
     this.tag = tag;
     this.progressListener = progressListener;
@@ -51,7 +51,8 @@ public final class ProgressResponseBody extends ResponseBody {
         long bytesRead = super.read(sink, byteCount);
         // read() returns the number of bytes read, or -1 if this progressSource is exhausted.
         totalBytesRead += bytesRead != -1 ? bytesRead : 0;
-        progressListener.update(tag, totalBytesRead, responseBody.contentLength(), bytesRead == -1);
+        progressListener.onProgress(tag, totalBytesRead, responseBody.contentLength(),
+            bytesRead == -1);
         return bytesRead;
       }
     };

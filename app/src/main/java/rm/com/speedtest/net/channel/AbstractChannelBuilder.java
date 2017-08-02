@@ -15,7 +15,7 @@ public abstract class AbstractChannelBuilder<C extends BaseChannel, B extends Ab
   private static final int DEFAULT_LISTENERS_AMOUNT = 20;
 
   HashMap<String, ChannelCall> channelCalls;
-  ArrayList<ChannelProgressListener> progressSubscribers;
+  ArrayList<ChannelListener> progressSubscribers;
   OkHttpClient httpClient;
   Modification modification;
 
@@ -28,7 +28,7 @@ public abstract class AbstractChannelBuilder<C extends BaseChannel, B extends Ab
 
   public AbstractChannelBuilder(@NonNull C channel) {
     this.channelCalls = new HashMap<>(channel.channelCalls);
-    this.progressSubscribers = new ArrayList<>(channel.progressSubscribers);
+    this.progressSubscribers = new ArrayList<>(channel.subscribers);
     this.httpClient = channel.httpClient;
     this.modification = channel.modification;
   }
@@ -38,8 +38,8 @@ public abstract class AbstractChannelBuilder<C extends BaseChannel, B extends Ab
     return (B) this;
   }
 
-  @NonNull public final B progressSubscribers(
-      @NonNull ArrayList<ChannelProgressListener> progressSubscribers) {
+  @NonNull
+  public final B progressSubscribers(@NonNull ArrayList<ChannelListener> progressSubscribers) {
     this.progressSubscribers = progressSubscribers;
     return (B) this;
   }

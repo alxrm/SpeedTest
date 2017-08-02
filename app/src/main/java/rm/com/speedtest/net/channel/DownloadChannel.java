@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import rm.com.speedtest.net.Endpoint;
 import rm.com.speedtest.net.interceptor.DiskStoreInterceptor;
 import rm.com.speedtest.net.interceptor.DownloadProgressInterceptor;
 
@@ -23,8 +22,7 @@ public final class DownloadChannel extends BaseChannel<DownloadChannel, Download
     final OkHttpClient.Builder builder = httpClient.newBuilder();
 
     addUniqueInterceptor(builder.interceptors(), new DiskStoreInterceptor(channelCalls));
-    addUniqueInterceptor(builder.networkInterceptors(),
-        new DownloadProgressInterceptor(channelCalls, this));
+    addUniqueInterceptor(builder.networkInterceptors(), new DownloadProgressInterceptor(this));
 
     return builder.build();
   }

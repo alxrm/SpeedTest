@@ -9,7 +9,7 @@ import okio.BufferedSink;
 import okio.ForwardingSink;
 import okio.Okio;
 import okio.Sink;
-import rm.com.speedtest.net.channel.ChannelProgressListener;
+import rm.com.speedtest.net.channel.LoadingProgressListener;
 
 /**
  * Created by alex
@@ -18,10 +18,10 @@ import rm.com.speedtest.net.channel.ChannelProgressListener;
 public final class ProgressRequestBody extends RequestBody {
   private final RequestBody requestBody;
   private final String tag;
-  private final ChannelProgressListener progressListener;
+  private final LoadingProgressListener progressListener;
 
   public ProgressRequestBody(@NonNull RequestBody requestBody, @NonNull String tag,
-      @NonNull ChannelProgressListener progressListener) {
+      @NonNull LoadingProgressListener progressListener) {
     this.requestBody = requestBody;
     this.tag = tag;
     this.progressListener = progressListener;
@@ -58,7 +58,7 @@ public final class ProgressRequestBody extends RequestBody {
           return;
         }
 
-        progressListener.update(tag, totalBytesWritten, contentLength(),
+        progressListener.onProgress(tag, totalBytesWritten, contentLength(),
             totalBytesWritten == contentLength());
       }
     };

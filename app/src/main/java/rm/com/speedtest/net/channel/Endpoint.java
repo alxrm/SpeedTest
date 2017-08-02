@@ -1,4 +1,4 @@
-package rm.com.speedtest.net;
+package rm.com.speedtest.net.channel;
 
 import android.support.annotation.NonNull;
 import java.io.File;
